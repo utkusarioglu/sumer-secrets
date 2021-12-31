@@ -5,4 +5,4 @@ metadata:
   namespace: services
 type: Opaque
 data:
-  infura-api-key: {{ .Files.Get "secrets/infura-api-key" | trim | b64enc | default "dummy-secret-value"}}
+  infura-api-key: {{ .Files.Get "secrets/infura-api-key" | trim | default "dummy-secret-value" | b64enc }}
