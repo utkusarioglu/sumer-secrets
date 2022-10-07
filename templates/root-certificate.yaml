@@ -1,0 +1,18 @@
+{{ $files := .Files}}
+{{ $certs_path := "secrets/ca" }}
+{{ $root_cert_path :=  printf "%s/%s" $certs_path "certs/chain.crt" }}
+{{ $root_key_path :=  printf "%s/%s" $certs_path "private/intermediate.key" }}
+{{ $namespaces := tuple "ms" "api" }}
+
+{{- range $namespaces }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: root-ca
+  namespace: {{ . }}
+type: Opaque
+data:
+  root.crt: {{ $files.Get $root_cert_path | b64enc }}
+  root.key: {{ $files.Get $root_key_path | b64enc }}
+---
+{{- end }}
